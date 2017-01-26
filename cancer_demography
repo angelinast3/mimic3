@@ -1,0 +1,13 @@
+-- create materialized view for cancer demography
+-- from mimiciii.icustay_detail
+-----------------------------
+
+DROP MATERIALIZED VIEW IF EXISTS cancer.cancerdemography CASCADE;
+CREATE MATERIALIZED VIEW cancer.cancerdemography AS
+SELECT DISTINCT cs.subject_id, hadm_id, icustay_id, gender, admittime, dischtime, 
+       los_hospital, age, ethnicity, admission_type, hospital_expire_flag, 
+       hospstay_seq, first_hosp_stay, intime, outtime, los_icu, icustay_seq, 
+       first_icu_stay
+  FROM mimiciii.icustay_detail id
+  INNER JOIN cancer.cancersubject cs
+  ON id.subject_id = cs.subject_id;
